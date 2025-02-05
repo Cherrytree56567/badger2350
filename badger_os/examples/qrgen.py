@@ -16,8 +16,8 @@ try:
 except OSError:
     text = open("/qrcodes/qrcode.txt", "w")
     if badger2040.is_wireless():
-        text.write("""https://pimoroni.com/badger2040w
-Badger 2040 W
+        text.write("""https://pimoroni.com/badger2350w
+Badger 2350 W
 * 296x128 1-bit e-ink
 * 2.4GHz wireless & RTC
 * five user buttons
@@ -25,18 +25,18 @@ Badger 2040 W
 * 2MB QSPI flash
 
 Scan this code to learn
-more about Badger 2040 W.
+more about Badger 2350 W.
 """)
     else:
-        text.write("""https://pimoroni.com/badger2040
-Badger 2040
+        text.write("""https://pimoroni.com/badger2350
+Badger 2350
 * 296x128 1-bit e-ink
 * five user buttons
 * user LED
 * 2MB QSPI flash
 
 Scan this code to learn
-more about Badger 2040.
+more about Badger 2350.
 """)
     text.flush()
     text.seek(0)
