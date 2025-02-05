@@ -12,7 +12,7 @@ Badger 2040 and Badger 2040 W are maker-friendly all-in-one badge wearables, fea
 Grab the latest release from [https://github.com/pimoroni/badger2040/releases/latest](https://github.com/pimoroni/badger2040/releases/latest)
 
 There are four .uf2 files to pick from.
-
+,
 :warning: Those marked `with-badger-os` contain a full filesystem image that will overwrite both the firmware *and* filesystem of your Badger:
 
 * pimoroni-badger2040-vX.X.X-micropython-with-badger-os.uf2 
