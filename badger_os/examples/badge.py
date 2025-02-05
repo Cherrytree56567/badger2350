@@ -1,95 +1,101 @@
+import os
 import badger2040
-import pngdec
+from badger2040 import HEIGHT, WIDTH
+import badger_os
 import jpegdec
+import pngdec
 
-# Global Constants
-WIDTH = badger2040.WIDTH
-HEIGHT = badger2040.HEIGHT
 
-IMAGE_WIDTH = 104
+TOTAL_IMAGES = 0
 
-COMPANY_HEIGHT = 30
-DETAILS_HEIGHT = 20
-NAME_HEIGHT = HEIGHT - COMPANY_HEIGHT - (DETAILS_HEIGHT * 2) - 2
-TEXT_WIDTH = WIDTH - IMAGE_WIDTH - 1
 
-COMPANY_TEXT_SIZE = 0.6
-DETAILS_TEXT_SIZE = 0.5
+# Turn the act LED on as soon as possible
+display = badger2040.Badger2040()
+display.led(128)
+display.set_update_speed(badger2040.UPDATE_NORMAL)
 
-LEFT_PADDING = 5
-NAME_PADDING = 20
-DETAIL_SPACING = 10
+jpeg = jpegdec.JPEG(display.display)
+png = pngdec.PNG(display.display)
 
-BADGE_PATH = "/badges/badge.txt"
 
-DEFAULT_TEXT = """mustelid inc
-H. Badger
-RP2040
-2MB Flash
-E ink
-296x128px
-/badges/badge.jpg
-"""
+# Load images
+try:
+    IMAGES = [f for f in os.listdir("/badges") if f.endswith(".jpg") or f.endswith(".png")]
+    TOTAL_IMAGES = len(IMAGES)
+except OSError:
+    pass
 
-# ------------------------------
-#      Utility functions
-# ------------------------------
 
-# Reduce the size of a string until it fits within a given width
-def truncatestring(text, text_size, width):
-    while True:
-        length = display.measure_text(text, text_size)
-        if length > 0 and length > width:
-            text = text[:-1]
-        else:
-            return text
+state = {
+    "current_image": 0,
+    "show_info": True
+}
 
-# ------------------------------
-#      Drawing functions
-# ------------------------------
 
-# Draw the badge, including user text
-def draw_badge():
-    display.set_pen(0)
-    display.clear()
+def draw_badge(n):
+    file = IMAGES[n]
+    name, ext = file.split(".")
 
     try:
-        # Draw badge image
-        png.open_file(badge_image)
-        png.decode(WIDTH - IMAGE_WIDTH, 0)
+        png.open_file("/badges/{}".format(file))
+        png.decode()
     except (OSError, RuntimeError):
-        # Fallback to drawing the JPEG if PNG fails
-        jpeg.open_file(badge_image)
-        jpeg.decode(WIDTH - IMAGE_WIDTH, 0)
+        jpeg.open_file("/badges/{}".format(file))
+        jpeg.decode()
 
-    # Draw a border around the image
-    display.set_pen(0)
-    display.line(WIDTH - IMAGE_WIDTH, 0, WIDTH - 1, 0)
-    display.line(WIDTH - IMAGE_WIDTH, 0, WIDTH - IMAGE_WIDTH, HEIGHT - 1)
-    display.line(WIDTH - IMAGE_WIDTH, HEIGHT - 1, WIDTH - 1, HEIGHT - 1)
-    display.line(WIDTH - 1, 0, WIDTH - 1, HEIGHT - 1)
+    if state["show_info"]:
+        label = f"{name} ({ext})"
+        name_length = display.measure_text(label, 0.5)
+        display.set_pen(0)
+        display.rectangle(0, HEIGHT - 21, name_length + 11, 21)
+        display.set_pen(15)
+        display.rectangle(0, HEIGHT - 20, name_length + 10, 20)
+        display.set_pen(0)
 
-    # Draw the company name (top)
-    display.set_pen(15)
-    display.set_font("serif")
-    display.text(company, LEFT_PADDING, (COMPANY_HEIGHT // 2) + 1, WIDTH, COMPANY_TEXT_SIZE)
+        for i in range(TOTAL_IMAGES):
+            x = 286
+            y = int((128 / 2) - (TOTAL_IMAGES * 10 / 2) + (i * 10))
+            display.set_pen(0)
+            display.rectangle(x, y, 8, 8)
+            if state["current_image"] != i:
+                display.set_pen(15)
+                display.rectangle(x + 1, y + 1, 6, 6)
 
-    # Draw the first name and last name
-    display.set_pen(15)
-    display.set_font("serif")
-    display.text(firstname, LEFT_PADDING, NAME_PADDING, TEXT_WIDTH, 0.8)
-    display.text(lastname, LEFT_PADDING, NAME_PADDING + 20, TEXT_WIDTH, 0.6)
-
-    # Draw the job title
-    display.set_pen(15)
-    display.set_font("serif")
-    job_title = truncatestring(jobtitle, DETAILS_TEXT_SIZE, TEXT_WIDTH)
-    display.text(job_title, LEFT_PADDING, NAME_PADDING + 40, TEXT_WIDTH, DETAILS_TEXT_SIZE)
-
-    # Draw the GitHub handle
-    display.set_pen(15)
-    githubhandle = "@" + githubhandle if not githubhandle.startswith('@') else githubhandle
-    display.text(githubhandle, LEFT_PADDING, NAME_PADDING + 60, TEXT_WIDTH, DETAILS_TEXT_SIZE)
-
-    # Update the display
     display.update()
+
+
+if TOTAL_IMAGES == 0:
+    raise RuntimeError("To run this demo, create an /badge directory on your device and upload some 1bit 296x128 pixel images.")
+
+
+badger_os.state_load("image", state)
+
+changed = True
+
+
+while True:
+    # Sometimes a button press or hold will keep the system
+    # powered *through* HALT, so latch the power back on.
+    display.keepalive()
+
+    if display.pressed(badger2040.BUTTON_UP):
+        if state["current_image"] > 0:
+            state["current_image"] -= 1
+            changed = True
+
+    if display.pressed(badger2040.BUTTON_DOWN):
+        if state["current_image"] < TOTAL_IMAGES - 1:
+            state["current_image"] += 1
+            changed = True
+
+    if display.pressed(badger2040.BUTTON_A):
+        state["show_info"] = not state["show_info"]
+        changed = True
+
+    if changed:
+        show_image(state["current_image"])
+        badger_os.state_save("image", state)
+        changed = False
+
+    # Halt the Badger to save power, it will wake up if any of the front buttons are pressed
+    display.halt()
