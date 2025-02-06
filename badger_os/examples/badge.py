@@ -53,14 +53,6 @@ def draw_badge():
     display.set_pen(0)
     display.clear()
 
-    try:
-        # Draw badge image
-        png.open_file(badge_image)
-        png.decode(WIDTH - IMAGE_WIDTH, 0)
-    except (OSError, RuntimeError):
-        # Fallback to drawing the JPEG if PNG fails
-        jpeg.open_file(badge_image)
-        jpeg.decode(WIDTH - IMAGE_WIDTH, 0)
 
     # Draw a border around the image
     display.set_pen(0)
@@ -72,24 +64,24 @@ def draw_badge():
     # Draw the company name (top)
     display.set_pen(15)
     display.set_font("serif")
-    display.text(company, LEFT_PADDING, (COMPANY_HEIGHT // 2) + 1, WIDTH, COMPANY_TEXT_SIZE)
+    display.text("CherryTree56567", LEFT_PADDING, (COMPANY_HEIGHT // 2) + 1, WIDTH, COMPANY_TEXT_SIZE)
 
     # Draw the first name and last name
     display.set_pen(15)
     display.set_font("serif")
-    display.text(firstname, LEFT_PADDING, NAME_PADDING, TEXT_WIDTH, 0.8)
-    display.text(lastname, LEFT_PADDING, NAME_PADDING + 20, TEXT_WIDTH, 0.6)
+    display.text("Ronit", LEFT_PADDING, NAME_PADDING, TEXT_WIDTH, 0.8)
+    display.text("D'Silva", LEFT_PADDING, NAME_PADDING + 20, TEXT_WIDTH, 0.6)
 
     # Draw the job title
     display.set_pen(15)
     display.set_font("serif")
     job_title = truncatestring(jobtitle, DETAILS_TEXT_SIZE, TEXT_WIDTH)
-    display.text(job_title, LEFT_PADDING, NAME_PADDING + 40, TEXT_WIDTH, DETAILS_TEXT_SIZE)
+    display.text("Developer", LEFT_PADDING, NAME_PADDING + 40, TEXT_WIDTH, DETAILS_TEXT_SIZE)
 
     # Draw the GitHub handle
     display.set_pen(15)
     githubhandle = "@" + githubhandle if not githubhandle.startswith('@') else githubhandle
-    display.text(githubhandle, LEFT_PADDING, NAME_PADDING + 60, TEXT_WIDTH, DETAILS_TEXT_SIZE)
+    display.text("@CherryTree56567", LEFT_PADDING, NAME_PADDING + 60, TEXT_WIDTH, DETAILS_TEXT_SIZE)
 
     # Update the display
     display.update()
