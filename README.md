@@ -1,4 +1,4 @@
-# Badger 2040 & Badger 2040 W <!-- omit in toc -->
+# Badger 2350 & Badger 2040 W <!-- omit in toc -->
 
 [![MicroPython Firmware](https://github.com/pimoroni/badger2040/actions/workflows/micropython.yml/badge.svg?branch=main)](https://github.com/pimoroni/badger2040/actions/workflows/micropython.yml)
 [![Python Linting](https://github.com/pimoroni/badger2040/actions/workflows/python-linting.yml/badge.svg?branch=main)](https://github.com/pimoroni/badger2040/actions/workflows/python-linting.yml)
