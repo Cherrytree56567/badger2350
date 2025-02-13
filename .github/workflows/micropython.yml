@@ -63,12 +63,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Badger 2040
-            shortname: badger2040
-            board: PIMORONI_BADGER2040
-          - name: Badger 2040 W
-            shortname: badger2040w
-            board: PIMORONI_BADGER2040W
           - name: Badger 2350
             shortname: badger2350
             board: PIMORONI_BADGER2350
