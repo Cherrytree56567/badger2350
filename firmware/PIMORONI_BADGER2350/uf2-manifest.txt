@@ -1,9 +1,17 @@
 launcher.py
 main.py
+dungeon1/*.jpg
+dungeon1/monster/*.jpg
+dungeon1/monster/*.txt
+dungeon1-Assets/*.png
+dungeon1-Assets/*.jpg
+dungeon1-Assets/*.aseprite
+dungeon1-Assets/monsters/*.aseprite
 examples/*.png
 examples/badge.py
 examples/chess.py
 examples/clock.py
+examples/dungeon.py
 examples/ebook.py
 examples/fonts.py
 examples/help.py
