@@ -39,6 +39,8 @@ if (NOT PIMORONI_PICO_PATH)
     endif()
 endif()
 
+set(PICO_FLASH_SIZE 2048K)
+
 get_filename_component(PIMORONI_PICO_PATH "${PIMORONI_PICO_PATH}" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
 if (NOT EXISTS ${PIMORONI_PICO_PATH})
     message(FATAL_ERROR "Directory '${PIMORONI_PICO_PATH}' not found")
