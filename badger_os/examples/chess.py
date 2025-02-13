@@ -637,4 +637,19 @@ def draw_chess():
         gc.collect()
         print((gc.mem_free(),))
 
-draw_chess()
+while True:
+    # Sometimes a button press or hold will keep the system
+    # powered *through* HALT, so latch the power back on.
+    display.keepalive()
+
+    if display.pressed(badger2040.BUTTON_UP):
+        changed = True
+
+    if display.pressed(badger2040.BUTTON_DOWN):
+        changed = True
+
+    if changed:
+        draw_chess()
+        changed = False
+
+    display.halt()
