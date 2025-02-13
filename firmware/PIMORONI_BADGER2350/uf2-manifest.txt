@@ -1,6 +1,7 @@
 launcher.py
 main.py
 examples/*.png
+examples/*.jpg
 examples/badge.py
 examples/chess.py
 examples/clock.py
