@@ -89,7 +89,7 @@ while True:
         changed = True
 
     if changed:
-        display_badge(state["current_image"])
+        draw_badge(state["current_image"])
         badger_os.state_save("image", state)
         changed = False
 
