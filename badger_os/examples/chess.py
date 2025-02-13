@@ -637,6 +637,8 @@ def draw_chess():
         gc.collect()
         print((gc.mem_free(),))
 
+changed = False
+
 while True:
     # Sometimes a button press or hold will keep the system
     # powered *through* HALT, so latch the power back on.
