@@ -10,6 +10,7 @@ examples/image.py
 examples/info.py
 examples/list.py
 examples/qrgen.py
+examples/chess.py
 images/*.jpg
 images/*.txt
 badges/*.txt
