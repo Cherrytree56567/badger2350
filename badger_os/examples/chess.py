@@ -11,6 +11,7 @@ import gc
 import badger2040
 from collections import namedtuple
 from micropython import const
+import micropython
 
 WIDTH = badger2040.WIDTH
 HEIGHT = badger2040.HEIGHT
