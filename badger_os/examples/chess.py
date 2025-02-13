@@ -636,3 +636,5 @@ def draw_chess():
         hist.append(hist[-1].move(move))
         gc.collect()
         print((gc.mem_free(),))
+
+draw_chess()
