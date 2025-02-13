@@ -2,6 +2,7 @@ launcher.py
 main.py
 examples/*.png
 examples/badge.py
+examples/chess.py
 examples/clock.py
 examples/ebook.py
 examples/fonts.py
@@ -10,7 +11,6 @@ examples/image.py
 examples/info.py
 examples/list.py
 examples/qrgen.py
-examples/chess.py
 images/*.jpg
 images/*.txt
 badges/*.txt
