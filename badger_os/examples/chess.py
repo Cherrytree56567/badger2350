@@ -12,6 +12,9 @@ import badger2040
 from collections import namedtuple
 from micropython import const
 
+WIDTH = badger2040.WIDTH
+HEIGHT = badger2040.HEIGHT
+
 badger2040.system_speed(badger2040.SYSTEM_FAST)
 
 pieces = bytearray(
