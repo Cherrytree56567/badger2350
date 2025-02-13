@@ -7,7 +7,7 @@
 Badger 2350 are maker-friendly all-in-one badge wearables, featuring a 2.9", 296x128 pixel, monochrome e-paper display.
 
 - [Install](#install)
-  - [Badger 2350](#badger-2040)
+  - [Badger 2350](#badger-2350)
 
 ## Install
 
