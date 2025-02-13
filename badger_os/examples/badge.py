@@ -64,10 +64,6 @@ def draw_badge(n):
     display.update()
 
 
-if TOTAL_IMAGES == 0:
-    raise RuntimeError("To run this demo, create an /badge directory on your device and upload some 1bit 296x128 pixel images.")
-
-
 badger_os.state_load("image", state)
 
 changed = True
@@ -93,7 +89,7 @@ while True:
         changed = True
 
     if changed:
-        show_image(state["current_image"])
+        display_badge(state["current_image"])
         badger_os.state_save("image", state)
         changed = False
 
