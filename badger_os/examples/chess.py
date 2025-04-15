@@ -14,6 +14,7 @@ import ujson
 from collections import namedtuple
 from micropython import const
 import micropython
+import uos
 
 # Device screen dimensions.
 WIDTH = badger2040.WIDTH
@@ -327,6 +328,20 @@ def load_game_state():
         print("No saved game state found or error reading file:", e)
         return None
 
+
+def reset_saved_state():
+    # Delete the saved state file if it exists.
+    try:
+        uos.remove(STATE_FILE)
+        print("Saved game state file deleted.")
+    except OSError:
+        print("No saved game state file found, skipping file deletion.")
+    
+    # Reinitialize the game state.
+    new_hist = [Position(initial, 0, (True, True), (True, True), 0, 0)]
+    save_game_state(new_hist)
+    print("Game state reinitialized.")
+
 ###############################################################################
 # Search logic
 ###############################################################################
@@ -586,6 +601,9 @@ changed = False
 
 while True:
     display.keepalive()
+    if display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_DOWN):
+        reset_game()
+        time.sleep(1)
     if display.pressed(badger2040.BUTTON_UP):
         changed = True
     if display.pressed(badger2040.BUTTON_DOWN):
