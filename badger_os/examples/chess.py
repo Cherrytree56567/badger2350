@@ -235,6 +235,7 @@ class Position(namedtuple('Position', 'board score wc bc ep kp')):
         score = self.score + self.value(move)
         board = self.put(board, j, board[i])
         board = self.put(board, i, '.')
+        # Update castling rights based on moved pieces and captures.
         if i == A1:
             wc = (False, wc[1])
         if i == H1:
@@ -243,20 +244,24 @@ class Position(namedtuple('Position', 'board score wc bc ep kp')):
             bc = (bc[0], False)
         if j == H8:
             bc = (False, bc[1])
+        # Handle castling.
         if p == 'K':
             wc = (False, False)
             if abs(j-i) == 2:
                 kp = (i+j)//2
                 board = self.put(board, A1 if j < i else H1, '.')
                 board = self.put(board, kp, 'R')
+        # Handle pawn promotion, double move, and en passant.
         if p == 'P':
             if A8 <= j <= H8:
                 board = self.put(board, j, 'Q')
-            if j - i == 2*N:
+            if j - i == 2 * N:
                 ep = i + N
             if j == self.ep:
                 board = self.put(board, j+S, '.')
-        return Position(board, score, wc, bc, ep, kp).rotate()
+        # IMPORTANT: Do NOT rotate the board here!
+        return Position(board, score, wc, bc, ep, kp)
+
 
     @micropython.native
     def value(self, move):
@@ -602,7 +607,7 @@ changed = False
 while True:
     display.keepalive()
     if display.pressed(badger2040.BUTTON_UP) and display.pressed(badger2040.BUTTON_DOWN):
-        reset_game()
+        reset_saved_state()
         time.sleep(1)
     if display.pressed(badger2040.BUTTON_UP):
         changed = True
