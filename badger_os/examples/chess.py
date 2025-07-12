@@ -631,13 +631,17 @@ def draw_chess():
     # At the beginning of your main function or in a startup sequence:
     state = load_game_state()
     if state is not None:
-        # Recreate your history list and position from the saved data.
-        # For example, if you saved the board as a string and the history as a list:
+        # state["history"] is a list of board strings; 
+        # for simplicity assume hist=[Position(initial,...)] if empty
         hist = state.get("history", [])
         if not hist:
             hist = [Position(initial, 0, (True, True), (True, True), 0, 0)]
     else:
         hist = [Position(initial, 0, (True, True), (True, True), 0, 0)]
+
+    # Track how many moves have been made
+    move_counter = 0
+
     searcher = Searcher()
     my_move = ''
     your_move = '...'
@@ -651,13 +655,17 @@ def draw_chess():
             display_score('You lost!')
             break
 
-        # We query the user until she enters a (pseudo) legal move.
-        save_game_state(hist)
         move = None
         while move not in hist[-1].gen_moves():
             your_move = wait_for_move()
             move = parse(your_move[:2]), parse(your_move[2:])
         hist.append(hist[-1].move(move))
+
+        move_counter += 1
+        if move_counter % 5 == 0:
+            # Save every 5 moves using update_state (which uses ujson.dump internally)
+            update_state(hist)
+        
         my_move = '...'
 
         # Optimized - trim history:
@@ -699,6 +707,10 @@ def draw_chess():
         your_move = '...'
         
         hist.append(hist[-1].move(move))
+        move_counter += 1
+        if move_counter % 5 == 0:
+            update_state(hist)
+        
         gc.collect()
         print((gc.mem_free(),))
 
