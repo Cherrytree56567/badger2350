@@ -17,5 +17,6 @@ images/*.jpg
 images/*.txt
 badges/*.txt
 badges/*.jpg
+badges/*.png
 books/*.txt
 icons/*.png
