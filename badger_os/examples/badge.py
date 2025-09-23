@@ -43,24 +43,6 @@ def draw_badge(n):
         jpeg.open_file("/badges/{}".format(file))
         jpeg.decode()
 
-    if state["show_info"]:
-        label = f"{name} ({ext})"
-        name_length = display.measure_text(label, 0.5)
-        display.set_pen(0)
-        display.rectangle(0, HEIGHT - 21, name_length + 11, 21)
-        display.set_pen(15)
-        display.rectangle(0, HEIGHT - 20, name_length + 10, 20)
-        display.set_pen(0)
-
-        for i in range(TOTAL_IMAGES):
-            x = 286
-            y = int((128 / 2) - (TOTAL_IMAGES * 10 / 2) + (i * 10))
-            display.set_pen(0)
-            display.rectangle(x, y, 8, 8)
-            if state["current_image"] != i:
-                display.set_pen(15)
-                display.rectangle(x + 1, y + 1, 6, 6)
-
     display.update()
 
 
