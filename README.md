@@ -36,3 +36,4 @@ The regular builds just include the firmware, and leave your files alone:
 ### Credits
 Dungeon Game from https://github.com/judah4/badger-dungeon
 Chess Game from https://github.com/niutech/chess-badger2040
+
